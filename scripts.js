@@ -5,4 +5,3 @@ const grid = new Grid(gridConfig);
 grid.build();
 grid.draw();
 
-console.log(grid.settings);
