@@ -5,18 +5,47 @@ class GridCell {
     generateQueryConstructor.call(this, ...arguments);
   }
   get position() {
-    return `${this.row}|${this.col}`;
+    return `${this.row}-${this.col}`;
   }
+
   render() {
-    // this.#renderElement();
-    // this.#renderGridCell();
-    // this.#renderHtml();
-    // this.renderOutInCells();
-    // this.#renderEvents();
+    this.#renderElement();
+    this.#renderGridCell();
+    this.#renderHtml();
+    //this.renderOutInCells();
+    //this.#renderEvents();
   }
-  //   #renderElement();
-  //   #renderGridCell();
-  //   #renderHtml();
+
+  #renderElement() {
+    console.log(this);
+    const {
+      grid: { gridElement },
+    } = this;
+
+    const gridCellElement = document.createElement("div");
+    gridCellElement.classList.add("gridCell");
+    gridCellElement.setAttribute("position", this.position);
+    gridElement.append(gridCellElement);
+    this.gridCellElement = gridCellElement;
+  }
+
+  #renderGridCell() {}
+
+  #renderHtml() {
+    const {
+      gridCellElement,
+      grid: {
+        settings: { cellSize, borderSize, borderColor },
+      },
+    } = this;
+
+    Object.assign(gridCellElement.style, {
+      width: `${cellSize}px`,
+      height: `${cellSize}px`,
+      border: `${borderSize}px solid ${borderColor}`,
+    });
+  }
+
   //   renderOutInCells();
   //   #renderEvents();
 }

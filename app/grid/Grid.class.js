@@ -40,14 +40,17 @@ class Grid {
       border: `${borderSize}px solid ${borderColor}`,
     });
   }
+
   #buildGridCells() {
+    
     const { numRows, numCols } = this;
-    this.gridCells = {};
+    this.gridcells = {};
+
     for (let row = 0; row < numRows; row++) {
       for (let col = 0; col < numCols; col++) {
         const gridCell = new GridCell({ grid: this, row, col });
         gridCell.render();
-        this.gridCells[gridCell.position] = gridCell;
+        this.gridcells[gridCell.position] = gridCell;
       }
     }
   }
