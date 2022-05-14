@@ -1,22 +1,24 @@
 import generateQueryConstructor from "../utils/object.utils.js";
+import renderEvents from "./gridCell/gridcell-events.methods.js";
 
 class GridCell {
   constructor() {
     generateQueryConstructor.call(this, ...arguments);
+    
   }
   get position() {
     return `${this.row}-${this.col}`;
   }
 
   render() {
-    this.#renderElement();
-    this.#renderGridCell();
-    this.#renderHtml();
-    this.renderOutInCells();
-    this.#renderEvents();
+    this.#renderHTMLElement();
+    this.#renderHtmlStyling();
+    this.#renderAttributes();
+    this.renderGridCellDynamics();
+    renderEvents.call(this);
   }
 
-  #renderElement() {
+  #renderHTMLElement() {
     console.log(this);
     const {
       grid: { gridElement },
@@ -29,16 +31,7 @@ class GridCell {
     this.gridCellElement = gridCellElement;
   }
 
-  #renderGridCell() {
-    const {
-      grid: { numCols, numRows },
-    } = this;
-    this.isBlocked = false;
-    this.isOutCell = this.position === "0-0";
-    this.isInCell = this.position === `${numRows - 1}-${numCols - 1}`;
-  }
-
-  #renderHtml() {
+  #renderHtmlStyling() {
     const {
       gridCellElement,
       grid: {
@@ -54,14 +47,20 @@ class GridCell {
     gridCellElement.setAttribute("draggable", true);
   }
 
-  renderOutInCells() {
+  #renderAttributes() {
+    const {
+      grid: { numCols, numRows },
+    } = this;
+    this.isBlocked = false;
+    this.isOutCell = this.position === "0-0";
+    this.isInCell = this.position === `${numRows - 1}-${numCols - 1}`;
+  }
+
+  renderGridCellDynamics() {
     this.gridCellElement.classList[this.isOutCell ? "add" : "remove"](
       "outCell"
     );
     this.gridCellElement.classList[this.isInCell ? "add" : "remove"]("inCell");
-  }
-
-  renderBlockedCells() {
     this.gridCellElement.classList[this.isBlocked ? "add" : "remove"](
       "blocked"
     );
@@ -69,80 +68,11 @@ class GridCell {
 
   //  -----------
 
-  #renderEvents() {
-    this.#renderClickEvent();
-    this.#renderHoverEvent();
-    this.#renderDragDropEvent();
-  }
-
-  #renderClickEvent() {
-    const { gridCellElement } = this;
-    gridCellElement.addEventListener("click", () => {
-      if (this.isOutCell || this.isInCell) return;
-      this.isBlocked = !this.isBlocked;
-      this.renderBlockedCells();
-    });
-  }
-
-  #renderHoverEvent() {
-    const { gridCellElement } = this;
-    gridCellElement.addEventListener("mouseover", () => {
-      if (this.isOutCell || this.isInCell) {
-        gridCellElement.style.cursor = "grab";
-      } else if (!this.isBlocked) {
-        gridCellElement.style.cursor = "pointer";
-      } else {
-        gridCellElement.style.cursor = "crosshair";
-      }
-    });
-  }
-
-  #renderDragDropEvent() {
-    const { gridCellElement, grid } = this;
-    gridCellElement.addEventListener("dragover", (event) => {
-      if (dontAllowDrop.call(this)) return;
-      event.preventDefault();
-    });
-    gridCellElement.addEventListener("dragstart", (event) => {
-      if (dontAllowDrag.call(this)) {
-        event.preventDefault();
-        return;
-      }
-      grid.draggedGridCell = this;
-    });
-
-    gridCellElement.addEventListener("drop", () => {
-      this.resetCell();
-      this.isOutCell = grid.draggedGridCell.isOutCell;
-      this.isInCell = grid.draggedGridCell.isInCell;
-      this.renderOutInCells();
-      grid.draggedGridCell.resetCell();
-      //grid.draw()
-    });
-
-    function dontAllowDrag() {
-      return !this.isOutCell && !this.isInCell;
-    }
-    function dontAllowDrop() {
-      if (grid.draggedGridCell.gridCellElement === gridCellElement) {
-        return true;
-      }
-      if (grid.draggedGridCell.isOutCell && this.isInCell) {
-        return true;
-      }
-      if (grid.draggedGridCell.isInCell && this.isOutCell) {
-        return true;
-      }
-      return false;
-    }
-  }
-
   resetCell() {
     this.isInCell = false;
     this.isOutCell = false;
     this.isBlocked = false;
-    this.renderOutInCells();
-    this.renderBlockedCells();
+    this.renderGridCellDynamics();
   }
 }
 
