@@ -12,7 +12,7 @@ class GridCell {
     this.#renderElement();
     this.#renderGridCell();
     this.#renderHtml();
-    //this.renderOutInCells();
+    this.renderOutInCells();
     this.#renderEvents();
   }
 
@@ -53,7 +53,12 @@ class GridCell {
     });
   }
 
-  //renderOutInCells();
+  renderOutInCells() {
+    this.gridCellElement.classList[this.isOutCell ? "add" : "remove"](
+      "outCell"
+    );
+    this.gridCellElement.classList[this.isInCell ? "add" : "remove"]("inCell");
+  }
 
   renderBlockedCells() {
     this.gridCellElement.classList[this.isBlocked ? "add" : "remove"](
@@ -66,7 +71,7 @@ class GridCell {
   #renderEvents() {
     this.#renderClickEvent();
     this.#renderHoverEvent();
-    //this.#renderDragDropEvent();
+    this.#renderDragDropEvent();
   }
 
   #renderClickEvent() {
@@ -77,6 +82,7 @@ class GridCell {
       this.renderBlockedCells();
     });
   }
+  
   #renderHoverEvent() {
     const { gridCellElement } = this;
     gridCellElement.addEventListener("mouseover", () => {
@@ -89,7 +95,54 @@ class GridCell {
       }
     });
   }
-  #renderDragDropEvent() {}
+
+  #renderDragDropEvent() {
+    const { gridCellElement, grid } = this;
+    gridCellElement.addEventListener("dragover", (event) => {
+      if (dontAllowDrop.call(this)) return;
+      event.preventDefault();
+    });
+    gridCellElement.addEventListener("dragstart", (event) => {
+      if (dontAllowDrag.call(this)) {
+        event.preventDefault();
+        return;
+      }
+      grid.draggedGridCell = this;
+    });
+
+    gridCellElement.addEventListener("drop", () => {
+      this.resetCell();
+      this.isOutCell = grid.draggedGridCell.isOutCell;
+      this.isInCell = grid.draggedGridCell.isInCell;
+      this.renderOutInCells();
+      grid.draggedGridCell.resetCell();
+      //grid.draw()
+    });
+
+    function dontAllowDrag() {
+      return !this.isOutCell && !this.isInCell;
+    }
+    function dontAllowDrop() {
+      if (grid.draggedGridCell.gridCellElement === gridCellElement) {
+        return true;
+      }
+      if (grid.draggedGridCell.isOutCell && this.isInCell) {
+        return true;
+      }
+      if (grid.draggedGridCell.isInCell && this.isOutCell) {
+        return true;
+      }
+      return false;
+    }
+  }
+
+  resetCell() {
+    this.isInCell = false;
+    this.isOutCell = false;
+    this.isBlocked = false;
+    this.renderOutInCells()
+    this.renderBlockedCells()
+  }
 }
 
 export default GridCell;
