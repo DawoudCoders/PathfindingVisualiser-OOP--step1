@@ -4,7 +4,10 @@ body {
   overflow: hidden;
 }
 
-.gridCell{
-  float:left;
-  
+.gridCell {
+  float: left;
+}
+
+.gridCell.blocked {
+  background: gray;
 }

@@ -13,7 +13,7 @@ class GridCell {
     this.#renderGridCell();
     this.#renderHtml();
     //this.renderOutInCells();
-    //this.#renderEvents();
+    this.#renderEvents();
   }
 
   #renderElement() {
@@ -29,7 +29,14 @@ class GridCell {
     this.gridCellElement = gridCellElement;
   }
 
-  #renderGridCell() {}
+  #renderGridCell() {
+    const {
+      grid: { numCols, numRows },
+    } = this;
+    this.isBlocked = false;
+    this.isOutCell = this.position === "0-0";
+    this.isInCell = this.position === `${numRows - 1}-${numCols - 1}`;
+  }
 
   #renderHtml() {
     const {
@@ -46,8 +53,43 @@ class GridCell {
     });
   }
 
-  //   renderOutInCells();
-  //   #renderEvents();
+  //renderOutInCells();
+
+  renderBlockedCells() {
+    this.gridCellElement.classList[this.isBlocked ? "add" : "remove"](
+      "blocked"
+    );
+  }
+
+  //  -----------
+
+  #renderEvents() {
+    this.#renderClickEvent();
+    this.#renderHoverEvent();
+    //this.#renderDragDropEvent();
+  }
+
+  #renderClickEvent() {
+    const { gridCellElement } = this;
+    gridCellElement.addEventListener("click", () => {
+      if (this.isOutCell || this.isInCell) return;
+      this.isBlocked = !this.isBlocked;
+      this.renderBlockedCells();
+    });
+  }
+  #renderHoverEvent() {
+    const { gridCellElement } = this;
+    gridCellElement.addEventListener("mouseover", () => {
+      if (this.isOutCell || this.isInCell) {
+        gridCellElement.style.cursor = "grab";
+      } else if (!this.isBlocked) {
+        gridCellElement.style.cursor = "pointer";
+      } else {
+        gridCellElement.style.cursor = "crosshair";
+      }
+    });
+  }
+  #renderDragDropEvent() {}
 }
 
 export default GridCell;
