@@ -4,7 +4,6 @@ import renderEvents from "./gridCell/gridcell-events.methods.js";
 class GridCell {
   constructor() {
     generateQueryConstructor.call(this, ...arguments);
-    
   }
   get position() {
     return `${this.row}-${this.col}`;
@@ -65,8 +64,6 @@ class GridCell {
       "blocked"
     );
   }
-
-  //  -----------
 
   resetCell() {
     this.isInCell = false;
