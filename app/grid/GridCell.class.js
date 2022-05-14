@@ -51,6 +51,7 @@ class GridCell {
       height: `${cellSize}px`,
       border: `${borderSize}px solid ${borderColor}`,
     });
+    gridCellElement.setAttribute("draggable", true);
   }
 
   renderOutInCells() {
@@ -82,7 +83,7 @@ class GridCell {
       this.renderBlockedCells();
     });
   }
-  
+
   #renderHoverEvent() {
     const { gridCellElement } = this;
     gridCellElement.addEventListener("mouseover", () => {
@@ -140,8 +141,8 @@ class GridCell {
     this.isInCell = false;
     this.isOutCell = false;
     this.isBlocked = false;
-    this.renderOutInCells()
-    this.renderBlockedCells()
+    this.renderOutInCells();
+    this.renderBlockedCells();
   }
 }
 
