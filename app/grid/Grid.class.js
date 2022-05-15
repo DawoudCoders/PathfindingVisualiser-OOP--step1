@@ -1,5 +1,6 @@
 import generateQueryConstructor from "../utils/object.utils.js";
 import GridCell from "../grid/GridCell.class.js";
+import GridDraw from "./GridDraw.class.js";
 
 class Grid {
   constructor() {
@@ -42,21 +43,23 @@ class Grid {
   }
 
   #buildGridCells() {
-    
     const { numRows, numCols } = this;
-    this.gridcells = {};
+    this.gridCells = {};
 
     for (let row = 0; row < numRows; row++) {
       for (let col = 0; col < numCols; col++) {
         const gridCell = new GridCell({ grid: this, row, col });
         gridCell.render();
-        this.gridcells[gridCell.position] = gridCell;
+        this.gridCells[gridCell.position] = gridCell;
       }
     }
   }
   //  #buildGridSvg()
 
-  draw() {}
+  draw() {
+    const gridDraw = new GridDraw({ grid: this });
+    gridDraw.draw();
+  }
 }
 
 export default Grid;

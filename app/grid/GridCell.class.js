@@ -18,7 +18,6 @@ class GridCell {
   }
 
   #renderHTMLElement() {
-    console.log(this);
     const {
       grid: { gridElement },
     } = this;
