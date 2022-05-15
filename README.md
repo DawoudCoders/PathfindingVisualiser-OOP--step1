@@ -1,4 +1,4 @@
-# PathfindingVisualiser-basic-
+# PathfindingVisualiser - Step 1
 
 This is my first step towards making a visual and interactive pathfinding algortihim wesbite, where you can choose from multiple different algorithims. 
 
