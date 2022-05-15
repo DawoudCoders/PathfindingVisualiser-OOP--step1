@@ -18,13 +18,14 @@ class GridPathFinding {
 
     for (let row = 0; row < numRows; row++) {
       const helperRow = [];
-      for (let col = 0; col < numRows; col++) {
+      for (let col = 0; col < numCols; col++) {
         const position = `${row}-${col}`;
         const cell = gridCells[position];
         helperRow.push(cell.isBlocked ? 1 : 0);
       }
       helperGrid.push(helperRow);
     }
+    console.log(helperGrid);
     return helperGrid;
   }
   generateHelperPath() {
@@ -32,7 +33,7 @@ class GridPathFinding {
     const pathfindingGrid = new PathfindingGrid(helperGrid);
     const outColRow = this.generateColRow(this.outCell.position);
     const inColRow = this.generateColRow(this.inCell.position);
-    console.log(inColRow);
+
     const aStarFinderConfig = {
       weight: this.grid.settings.verticesWeight,
     };
