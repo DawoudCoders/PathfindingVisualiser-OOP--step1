@@ -9,6 +9,7 @@ class GridPathFinding {
   constructor() {
     generateQueryConstructor.call(this, ...arguments);
   }
+  //generateHelperGrid: Creates a mock up matrix with 0's and 1's depicting the non blocked and blocked cells 
   generateHelperGrid() {
     const {
       grid: { gridCells, numRows, numCols },
@@ -28,6 +29,7 @@ class GridPathFinding {
     console.log(helperGrid);
     return helperGrid;
   }
+  //generateHelperPath: this links into the imported algorithim and uses the helper grid function to find the optimum path 
   generateHelperPath() {
     const helperGrid = this.generateHelperGrid();
     const pathfindingGrid = new PathfindingGrid(helperGrid);
