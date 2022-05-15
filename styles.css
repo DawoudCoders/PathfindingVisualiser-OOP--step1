@@ -18,3 +18,14 @@ body {
 .gridCell.outCell {
   background: greenyellow;
 }
+
+svg {
+  position: fixed;
+  z-index: -1;
+}
+
+svg path {
+  fill: none;
+  stroke-width: 5px;
+  stroke: red;
+}

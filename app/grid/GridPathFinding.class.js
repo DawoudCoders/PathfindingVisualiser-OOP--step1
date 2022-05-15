@@ -26,7 +26,7 @@ class GridPathFinding {
       }
       helperGrid.push(helperRow);
     }
-    console.log(helperGrid);
+
     return helperGrid;
   }
   //generateHelperPath: this links into the imported algorithim and uses the helper grid function to find the optimum path 
@@ -45,7 +45,7 @@ class GridPathFinding {
       ...inColRow,
       pathfindingGrid
     );
-    console.log(helperPath);
+
     return helperPath;
   }
   generateColRow(position) {
