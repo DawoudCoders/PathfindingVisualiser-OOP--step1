@@ -15,9 +15,8 @@ class GridDraw {
   }
   draw() {
     const { outCell, inCell, grid } = this;
-    console.log(inCell);
-    const GridPathFinding = new GridPathFinding({ grid, outCell, inCell });
-    this.helperPath = GridPathFinding.generateHelperPath();
+    const gridPathFinding = new GridPathFinding({ grid, outCell, inCell });
+    this.helperPath = gridPathFinding.generateHelperPath();
   }
 }
 
